@@ -146,6 +146,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App2.c" />
+    <ClCompile Include="input.c" />
+    <ClCompile Include="output.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="input.h" />
+    <ClInclude Include="output.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
