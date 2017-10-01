@@ -90,10 +90,13 @@ int main(void)
 		printf(" |\n");
 		tsep(twidth);
 
-		char *xstr = mymalloc(char*, twidth.x + 1);
-		char *ystr = mymalloc(char*, twidth.y + 1);
-		assert(xstr, "Couldn't allocate memory for xstr string buffer during table printing in main()!");
-		assert(ystr, "Couldn't allocate memory for ystr string buffer during table printing in main()!");
+		char *xstr = MY_MALLOC(char*, twidth.x + 1);
+		char *ystr = MY_MALLOC(char*, twidth.y + 1);
+
+		if (!xstr || !ystr) {
+			printf("Couldn't allocate memory for string buffer during table printing in main()!\n");
+			exit(EXIT_FAILURE);
+		}
 
 		for (double x = input.X1; x < input.X2 + EPS; x += input.dX) {
 			dtoswf(xstr, twidth.x + 1, x, twidth.x);

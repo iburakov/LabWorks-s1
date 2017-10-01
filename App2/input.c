@@ -34,10 +34,10 @@ uint getword(char *dest, char *lastchar) {
 // Returns SUCCESS or FAILURE.
 bool getdouble(double *dest) {
 	char lastchar;
-	char *token = mymalloc(char*, MAX_WORDLEN);
+	char *token = MY_MALLOC(char*, MAX_WORDLEN);
+	MALLOC_CHK(token, "Couldn't allocate memory for token string buffer in getdouble()!");
 	char *token_end;
 	
-	assert(token, "Couldn't allocate memory for token string buffer in getdouble()!");
 
 	uint len = getword(token, &lastchar);
 	*dest = strtod(token, &token_end);
@@ -58,7 +58,6 @@ bool getdouble(double *dest) {
 // TODO REDO
 bool readinp(input_t *input) {
 	while (TRUE) {
-		double val;
 		uint error = 0;
 
 		printf("Input Radius value: ");

@@ -4,7 +4,6 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 #include <locale.h>
 
 #ifndef M_PI
@@ -18,7 +17,8 @@
 #define FALSE 0
 #define EPS 1e-07
 
-#define mymalloc(type, count) (type)malloc(sizeof(type) * count)
+#define MY_MALLOC(type, count) (type)malloc(sizeof(type) * count)
+#define MALLOC_CHK(var, errmsg) if (!var) {printf(#errmsg "\n"); exit(EXIT_FAILURE);}
 
 
 typedef unsigned int uint, bool;
