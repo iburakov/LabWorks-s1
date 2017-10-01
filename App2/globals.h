@@ -7,6 +7,10 @@
 #include <assert.h>
 #include <locale.h>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif // !M_PI
+
 #define MAX_WORDLEN 0x100
 #define SUCCESS 1
 #define FAILURE 0

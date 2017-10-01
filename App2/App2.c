@@ -7,8 +7,27 @@ input_t input;
 tablewidth_t twidth;
 
 
-double func(double x) {
-	return 0.0;
+double func(double x, double R) {
+	
+	if (x > M_PI) {
+		return x - M_PI;
+	}
+	else if (x > 0) {
+		return sin(x);
+	}
+	else if (x > -4) {
+		return -0.5 * x;
+	}
+	else if (x > -5) {
+		double k = abs(x) - 4;
+		return 2 + (R - 2) * k;
+	}
+	else if (x > -5 - 2 * R) {
+		return R - sqrt(R*R - pow(x + 5 + R, 2));
+	}
+	else {
+		return NAN;
+	}
 }
 
 
@@ -16,7 +35,7 @@ double func(double x) {
 //
 // the string is already baked for printing to table (including fixed _width_)
 void strfunc(char *dest, uint dest_size, double x, uint width) {
-	double y = func(x);
+	double y = func(x, input.R);
 	if (isnan(y)) {
 		swf(dest, dest_size, "NaN", width);
 	}
@@ -46,16 +65,12 @@ int main(void)
 		assert(ystr, "Couldn't allocate memory for ystr string buffer during table printing in main()!");
 
 		for (double x = input.X1; x < input.X2 + EPS; x += input.dX) {
-			double y = func(x);
-			uint xstrl = (abs(x) > EPS) ? (uint)log10(abs(x)) + 5 + ((x < 0) ? 1 : 0) : 5;
-			uint ystrl = (abs(y) > EPS) ? (uint)log10(abs(y)) + 5 + ((y < 0) ? 1 : 0) : 5;
+			double y = func(x, input.R);
+			uint xstrl = (abs(x) > 0.0 - EPS) ? (uint)log10(abs(x)) + 5 + ((x < 0) ? 1 : 0) : 5;
+			uint ystrl = (abs(y) > 0.0 - EPS) ? (uint)log10(abs(y)) + 5 + ((y < 0) ? 1 : 0) : 5;
 			
-			if (xstrl > twidth.x) {
-				twidth.x = xstrl;
-			}
-			if (ystrl > twidth.y) {
-				twidth.y = ystrl;
-			}
+			if (xstrl > twidth.x) twidth.x = xstrl;
+			if (ystrl > twidth.y) twidth.y = ystrl;
 		} 
 
 		tsep(twidth);
