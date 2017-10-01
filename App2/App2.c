@@ -19,11 +19,14 @@ double func(double x, double R) {
 		return -0.5 * x;
 	}
 	else if (x > -5) {
-		double k = abs(x) - 4;
+		double k = fabs(x) - 4;
 		return 2 + (R - 2) * k;
 	}
-	else if (x > -5 - 2 * R) {
+	else if (x > -5.0 - 2.0 * R) {
 		return R - sqrt(R*R - pow(x + 5 + R, 2));
+	}
+	else if (fabs(x - (-5 - 2 * R)) < EPS) {
+		return R;
 	}
 	else {
 		return NAN;
@@ -66,8 +69,8 @@ int main(void)
 
 		for (double x = input.X1; x < input.X2 + EPS; x += input.dX) {
 			double y = func(x, input.R);
-			uint xstrl = (abs(x) > 0.0 - EPS) ? (uint)log10(abs(x)) + 5 + ((x < 0) ? 1 : 0) : 5;
-			uint ystrl = (abs(y) > 0.0 - EPS) ? (uint)log10(abs(y)) + 5 + ((y < 0) ? 1 : 0) : 5;
+			uint xstrl = (fabs(x) > 0.0 - EPS) ? (uint)log10(fabs(x)) + 5 + ((x < 0) ? 1 : 0) : 5;
+			uint ystrl = (fabs(y) > 0.0 - EPS) ? (uint)log10(fabs(y)) + 5 + ((y < 0) ? 1 : 0) : 5;
 			
 			if (xstrl > twidth.x) twidth.x = xstrl;
 			if (ystrl > twidth.y) twidth.y = ystrl;
