@@ -61,16 +61,10 @@ int main(void)
 	printf("Илья Бураков, P3117\n");
 
 	if (readinp(&input) == SUCCESS) {
-		uint bufsz = sizeof(char*) * MAX_WORDLEN;
-		char *xstr = mymalloc(char*, MAX_WORDLEN);
-		char *ystr = mymalloc(char*, MAX_WORDLEN);
-		assert(xstr, "Couldn't allocate memory for xstr string buffer during table printing in main()!");
-		assert(ystr, "Couldn't allocate memory for ystr string buffer during table printing in main()!");
-
 		for (double x = input.X1; x < input.X2 + EPS; x += input.dX) {
 			double y = func(x, input.R);
-			uint xstrl = (fabs(x) > 0.0 - EPS) ? (uint)log10(fabs(x)) + 5 + ((x < 0) ? 1 : 0) : 5;
-			uint ystrl = (fabs(y) > 0.0 - EPS) ? (uint)log10(fabs(y)) + 5 + ((y < 0) ? 1 : 0) : 5;
+			uint xstrl = (abs(x) > 0) ? (uint)log10(abs(x)) + 5 + ((x < 0) ? 1 : 0) : 5;
+			uint ystrl = (abs(y) > 0) ? (uint)log10(abs(y)) + 5 + ((y < 0) ? 1 : 0) : 5;
 			
 			if (xstrl > twidth.x) twidth.x = xstrl;
 			if (ystrl > twidth.y) twidth.y = ystrl;
@@ -96,9 +90,14 @@ int main(void)
 		printf(" |\n");
 		tsep(twidth);
 
+		char *xstr = mymalloc(char*, twidth.x + 1);
+		char *ystr = mymalloc(char*, twidth.y + 1);
+		assert(xstr, "Couldn't allocate memory for xstr string buffer during table printing in main()!");
+		assert(ystr, "Couldn't allocate memory for ystr string buffer during table printing in main()!");
+
 		for (double x = input.X1; x < input.X2 + EPS; x += input.dX) {
-			dtoswf(xstr, bufsz, x, twidth.x);
-			strfunc(ystr, bufsz, x, twidth.y);
+			dtoswf(xstr, twidth.x + 1, x, twidth.x);
+			strfunc(ystr, twidth.y + 1, x, twidth.y);
 			printf("| %s | %s |\n", xstr, ystr);
 		}	
 
