@@ -8,7 +8,6 @@ tablewidth_t twidth;
 
 
 double func(double x, double R) {
-	
 	if (x > M_PI) {
 		return x - M_PI;
 	}
@@ -71,8 +70,8 @@ int main(void)
 			if (ystrl > twidth.y) twidth.y = ystrl;
 		} 
 
-		tsep(twidth, 218, 194, 191);
-		printf("%c ", 179);
+		tsep(twidth, BD_TOP_LEFT, BD_TOP_MID, BD_TOP_RIGHT);
+		printf("%c ", BD_VERTICAL);
 		uint xpos = twidth.x / 2;
 		uint ypos = twidth.y / 2;
 		for (uint i = 0; i < twidth.x; ++i) {
@@ -81,15 +80,15 @@ int main(void)
 			else 
 				putchar(' ');
 		}
-		printf(" %c ", 179);
+		printf(" %c ", BD_VERTICAL);
 		for (uint i = 0; i < twidth.y; ++i) {
 			if (i == ypos)
 				putchar('Y');
 			else
 				putchar(' ');
 		}
-		printf(" %c\n", 179);
-		tsep(twidth, 195, 197, 180);
+		printf(" %c\n", BD_VERTICAL);
+		tsep(twidth, BD_MID_LEFT, BD_MID_MID, BD_MID_RIGHT);
 
 		char *xstr = MY_MALLOC(char*, twidth.x + 1);
 		char *ystr = MY_MALLOC(char*, twidth.y + 1);
@@ -99,10 +98,10 @@ int main(void)
 		for (double x = input.X1; fabs(x) < fabs(input.X2) + EPS; x += input.dX) {
 			dtoswf(xstr, twidth.x + 1, x, twidth.x);
 			strfunc(ystr, twidth.y + 1, x, twidth.y);
-			printf("%c %s %c %s %c\n", 179, xstr, 179, ystr, 179);
+			printf("%c %s %c %s %c\n", BD_VERTICAL, xstr, BD_VERTICAL, ystr, BD_VERTICAL);
 		}	
 
-		tsep(twidth, 192, 193, 217);
+		tsep(twidth, BD_BOT_LEFT, BD_BOT_MID, BD_BOT_RIGHT);
 
 		free(xstr);
 		free(ystr);

@@ -21,6 +21,18 @@
 #define MY_MALLOC(type, count) (type)malloc(sizeof(type) * count)
 #define MALLOC_CHK(var, errmsg) if (!var) {printf(#errmsg "\n"); exit(EXIT_FAILURE);}
 
+#define BD_TOP_LEFT 218
+#define BD_TOP_MID 194
+#define BD_TOP_RIGHT 191
+#define BD_MID_LEFT 195
+#define BD_MID_MID 197
+#define BD_MID_RIGHT 180
+#define BD_BOT_LEFT 192
+#define BD_BOT_MID 193
+#define BD_BOT_RIGHT 217
+#define BD_HORIZONTAL 
+#define BD_VERTICAL 179
+
 
 typedef unsigned int uint, bool;
 
