@@ -55,7 +55,7 @@ bool getdouble(double *dest) {
 }
 
 // Reads the input to the Input struct that _input_ points to. Returns TRUE on success, otherwise FALSE.
-bool readinp(input_t *input) {
+bool read_input(input_t *input) {
 	uint error = 0;
 	while (TRUE) {
 		if (error) {

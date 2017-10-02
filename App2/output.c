@@ -4,7 +4,7 @@
 // Double To String Formatted
 // Writes the trailingzeros-formatted string representation of double _x_ to _dest_.
 // DONE
-void dtosf(char *dest, uint dest_size, double x) {
+void dtostr_formatted(char *dest, uint dest_size, double x) {
 	sprintf_s(dest, dest_size, "%.3lf", x);
 
 	char* dot = strchr(dest, '.');
@@ -27,18 +27,18 @@ void dtosf(char *dest, uint dest_size, double x) {
 //
 // string has a fixed _width_ (aligning to right, hiding overflow), and trailingzeros-formatted as well.
 // DONE
-void dtoswf(char *dest, uint dest_size, double x, uint width) {
+void dtostr_width_formatted(char *dest, uint dest_size, double x, uint width) {
 	char* xstr = MY_MALLOC(char*, dest_size);
 	MALLOC_CHK(xstr, "Couldn't allocate memory for xstr string buffer in dtoswf()!");
-	dtosf(xstr, dest_size, x);
-	swf(dest, dest_size, xstr, width);
+	dtostr_formatted(xstr, dest_size, x);
+	string_width_formatted(dest, dest_size, xstr, width);
 	free(xstr);
-}
+}	
 
 
 // String Width Formatted
 // Writes a width-formatted string (aligning to right, hiding overflow)
-void swf(char *dest, uint dest_size, char* str, uint width) {
+void string_width_formatted(char *dest, uint dest_size, char* str, uint width) {
 	char* format = MY_MALLOC(char*, dest_size);
 	MALLOC_CHK(format, "Couldn't allocate memory for format string buffer in swf()!");
 	sprintf_s(format, dest_size, "%%%d.%ds", width, width);
@@ -48,7 +48,7 @@ void swf(char *dest, uint dest_size, char* str, uint width) {
 
 // Prints a separator for a table with width defined in _twidth_
 // DONE
-void tsep(tablewidth_t twidth, char left, char mid, char right) {
+void print_table_separator(tablewidth_t twidth, char left, char mid, char right) {
 	printf("%c%c", left, 196);
 	for (int i = 0; i < twidth.x; ++i) {
 		putchar(196);

@@ -38,17 +38,21 @@ double func(double x, double R) {
 // the string is already baked for printing to table (including fixed _width_)
 void strfunc(char *dest, uint dest_size, double x, uint width) {
 	double y = func(x, input.R);
+	if (fabs(y - 0.0) < 0.001) {
+		// -0.0 protection
+		y = 0.0;
+	}
 	if (isnan(y)) {
-		swf(dest, dest_size, "NaN", width);
+		string_width_formatted(dest, dest_size, "NaN", width);
 	}
 	else if (isinf(y) && y > 0.0) {
-		swf(dest, dest_size, "+Inf", width);
+		string_width_formatted(dest, dest_size, "+Inf", width);
 	}
 	else if (isinf(y) && y < 0.0) {
-		swf(dest, dest_size, "-Inf", width);
+		string_width_formatted(dest, dest_size, "-Inf", width);
 	}
 	else {
-		dtoswf(dest, dest_size, y, width);
+		dtostr_width_formatted(dest, dest_size, y, width);
 	}
 }
 
@@ -60,7 +64,7 @@ int main(void)
 	printf("Илья Бураков, P3117\n");
 	setlocale(LC_CTYPE, "C");
 
-	if (readinp(&input) == SUCCESS) {
+	if (read_input(&input) == SUCCESS) {
 		for (double x = input.X1; fabs(x) < fabs(input.X2) + EPS; x += input.dX) {
 			double y = func(x, input.R);
 			uint xstrl = (abs(x) > 0) ? (uint)log10(abs(x)) + 5 + ((x < 0) ? 1 : 0) : 5;
@@ -70,7 +74,7 @@ int main(void)
 			if (ystrl > twidth.y) twidth.y = ystrl;
 		} 
 
-		tsep(twidth, BD_TOP_LEFT, BD_TOP_MID, BD_TOP_RIGHT);
+		print_table_separator(twidth, BD_TOP_LEFT, BD_TOP_MID, BD_TOP_RIGHT);
 		printf("%c ", BD_VERTICAL);
 		uint xpos = twidth.x / 2;
 		uint ypos = twidth.y / 2;
@@ -88,7 +92,7 @@ int main(void)
 				putchar(' ');
 		}
 		printf(" %c\n", BD_VERTICAL);
-		tsep(twidth, BD_MID_LEFT, BD_MID_MID, BD_MID_RIGHT);
+		print_table_separator(twidth, BD_MID_LEFT, BD_MID_MID, BD_MID_RIGHT);
 
 		char *xstr = MY_MALLOC(char*, twidth.x + 1);
 		char *ystr = MY_MALLOC(char*, twidth.y + 1);
@@ -96,12 +100,12 @@ int main(void)
 		MALLOC_CHK(ystr, "Couldn't allocate memory for ystr string buffer during table printing in main()!");
 
 		for (double x = input.X1; fabs(x) < fabs(input.X2) + EPS; x += input.dX) {
-			dtoswf(xstr, twidth.x + 1, x, twidth.x);
+			dtostr_width_formatted(xstr, twidth.x + 1, x, twidth.x);
 			strfunc(ystr, twidth.y + 1, x, twidth.y);
 			printf("%c %s %c %s %c\n", BD_VERTICAL, xstr, BD_VERTICAL, ystr, BD_VERTICAL);
 		}	
 
-		tsep(twidth, BD_BOT_LEFT, BD_BOT_MID, BD_BOT_RIGHT);
+		print_table_separator(twidth, BD_BOT_LEFT, BD_BOT_MID, BD_BOT_RIGHT);
 
 		free(xstr);
 		free(ystr);

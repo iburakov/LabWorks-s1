@@ -18,6 +18,6 @@ bool getdouble(double *dest);
 // Reads the input to the Input struct that _input_ points to. Returns TRUE on success, otherwise FALSE.
 //
 // actually, the implementation looks ugly enough to me in matters of code design. consider redesigning.
-bool readinp(input_t *input);
+bool read_input(input_t *input);
 
 #endif // !INPUT_H
