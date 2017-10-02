@@ -41,7 +41,9 @@ bool getdouble(double *dest) {
 
 	uint len = getword(token, &lastchar);
 	*dest = strtod(token, &token_end);
-	if (token != token_end && token_end == (token + len) && (lastchar == '\n' || getchar_after_spaces() == '\n')) {
+	if (token != token_end && token_end == (token + len) 
+		&& (lastchar == '\n' || getchar_after_spaces() == '\n')
+		&& !isnan(*dest) && !isinf(*dest)) {
 		free(token);
 		return SUCCESS;
 	}
@@ -49,50 +51,70 @@ bool getdouble(double *dest) {
 		free(token);
 		clean_buffer(lastchar);
 		return FAILURE;
-		
 	}
 }
 
 // Reads the input to the Input struct that _input_ points to. Returns TRUE on success, otherwise FALSE.
-//
-// actually, the implementation looks ugly enough to me in matters of code design. consider redesigning.
-// TODO REDO
 bool readinp(input_t *input) {
+	uint error = 0;
 	while (TRUE) {
-		uint error = 0;
+		if (error) {
+			char* errstr;
+			switch (error)
+			{
+			case 1: errstr = "can't parse a valid number"; break;
+			case 2: errstr = "radius should be greater than zero"; break;
+			case 3: errstr = "incompatible parameters - calculation will never stop"; break;
+			case 4: errstr = "incompatible parameters - too many steps to do"; break;
+			default: errstr = "unknown error"; break;
+			}
+			printf("Wrong input: %s. Type 'y' to retry, or any other to exit from application: ", errstr);
+
+			char c;
+			if ((c = getchar_after_spaces()) == 'y' && (c = getchar_after_spaces()) == '\n') {
+				continue;
+			}
+			else {
+				clean_buffer(c);
+				return FAILURE;
+			}
+		}
 
 		printf("Input Radius value: ");
-		if (getdouble(&(input->R))) {
-			if (input->R > 0 - EPS) {
-				printf("Input Xstart: ");
-				if (getdouble(&(input->X1))) {
-					printf("Input Xend: ");
-					if (getdouble(&(input->X2))) {
-						printf("Input deltaX: ");
-						if (getdouble(&(input->dX))) {
-							return SUCCESS;
-						}
-						else error = 1;
-					}
-					else error = 1;
-				}
-				else error = 1;
-			}
-			else error = 2;
-		}
-		else error = 1;
-
-		char* errstr;
-		switch (error)
-		{
-		case 1: errstr = "can't parse a valid number"; break;
-		case 2: errstr = "radius should be greater than zero"; break;
-		default: errstr = "unknown error"; break;
-		}
-		printf("Wrong input: %s. Type 'y' for repeat, or any other for exit from application: ", errstr);
-		if (getchar_after_spaces() == 'y' && getchar_after_spaces() == '\n') {
+		if (!getdouble(&(input->R))) {
+			error = 1;
 			continue;
 		}
-		else return FAILURE;
+		if (input->R <= 0 + EPS) {
+			error = 2;
+			continue;
+		}
+
+		printf("Input Xstart: ");
+		if (getdouble(&(input->X1)) == FAILURE) {
+			error = 1;
+			continue;
+		}
+
+		printf("Input Xend: ");
+		if (getdouble(&(input->X2)) == FAILURE) {
+			error = 1;
+			continue;
+		}
+
+		printf("Input deltaX: ");
+		if (getdouble(&(input->dX)) == FAILURE) {
+			error = 1;
+			continue;
+		}
+		if (((input->X2 - input->X1) > 0) != (input->dX > 0)) {
+			error = 3;
+			continue;
+		}
+		if ((input->X2 - input->X1) / input->dX > MAX_STEPS) {
+			error = 4;
+			continue;
+		}
+		return SUCCESS;
 	}
 }

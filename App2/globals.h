@@ -11,6 +11,7 @@
 #endif // !M_PI
 
 #define MAX_WORDLEN 0x100
+#define MAX_STEPS 200
 #define SUCCESS 1
 #define FAILURE 0
 #define TRUE 1
