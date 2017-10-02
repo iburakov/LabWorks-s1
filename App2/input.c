@@ -72,6 +72,7 @@ bool readinp(input_t *input) {
 
 			char c;
 			if ((c = getchar_after_spaces()) == 'y' && (c = getchar_after_spaces()) == '\n') {
+				error = 0;
 				continue;
 			}
 			else {
@@ -107,7 +108,7 @@ bool readinp(input_t *input) {
 			error = 1;
 			continue;
 		}
-		if (((input->X2 - input->X1) > 0) != (input->dX > 0)) {
+		if (input->dX == 0 || (((input->X2 - input->X1) >= 0) != (input->dX > 0))) {
 			error = 3;
 			continue;
 		}

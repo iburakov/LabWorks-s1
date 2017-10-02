@@ -62,7 +62,7 @@ int main(void)
 	setlocale(LC_CTYPE, "C");
 
 	if (readinp(&input) == SUCCESS) {
-		for (double x = input.X1; x < input.X2 + EPS; x += input.dX) {
+		for (double x = input.X1; fabs(x) < fabs(input.X2) + EPS; x += input.dX) {
 			double y = func(x, input.R);
 			uint xstrl = (abs(x) > 0) ? (uint)log10(abs(x)) + 5 + ((x < 0) ? 1 : 0) : 5;
 			uint ystrl = (abs(y) > 0) ? (uint)log10(abs(y)) + 5 + ((y < 0) ? 1 : 0) : 5;
@@ -96,7 +96,7 @@ int main(void)
 		MALLOC_CHK(xstr, "Couldn't allocate memory for xstr string buffer during table printing in main()!");
 		MALLOC_CHK(ystr, "Couldn't allocate memory for ystr string buffer during table printing in main()!");
 
-		for (double x = input.X1; x < input.X2 + EPS; x += input.dX) {
+		for (double x = input.X1; fabs(x) < fabs(input.X2) + EPS; x += input.dX) {
 			dtoswf(xstr, twidth.x + 1, x, twidth.x);
 			strfunc(ystr, twidth.y + 1, x, twidth.y);
 			printf("%c %s %c %s %c\n", 179, xstr, 179, ystr, 179);
