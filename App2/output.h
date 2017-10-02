@@ -22,6 +22,6 @@ void swf(char * dest, uint dest_size, char * str, uint width);
 
 // Prints a separator for a table with width defined in _twidth_
 // DONE
-void tsep(tablewidth_t twidth);
+void tsep(tablewidth_t twidth, char left, char mid, char right);
 
 #endif // !OUTPUT_H

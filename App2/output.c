@@ -48,14 +48,14 @@ void swf(char *dest, uint dest_size, char* str, uint width) {
 
 // Prints a separator for a table with width defined in _twidth_
 // DONE
-void tsep(tablewidth_t twidth) {
-	printf("+-");
+void tsep(tablewidth_t twidth, char left, char mid, char right) {
+	printf("%c%c", left, 196);
 	for (int i = 0; i < twidth.x; ++i) {
-		putchar('-');
+		putchar(196);
 	}
-	printf("-+-");
+	printf("%c%c%c", 196, mid, 196);
 	for (int i = 0; i < twidth.y; ++i) {
-		putchar('-');
+		putchar(196);
 	}
-	printf("-+\n");
+	printf("%c%c\n", 196, right);
 }

@@ -49,6 +49,7 @@ bool getdouble(double *dest) {
 		free(token);
 		clean_buffer(lastchar);
 		return FAILURE;
+		
 	}
 }
 

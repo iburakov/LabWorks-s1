@@ -59,6 +59,7 @@ int main(void)
 	setlocale(LC_CTYPE, "Russian");
 	printf("Лабораторная работа №2, вариант 3\n");
 	printf("Илья Бураков, P3117\n");
+	setlocale(LC_CTYPE, "C");
 
 	if (readinp(&input) == SUCCESS) {
 		for (double x = input.X1; x < input.X2 + EPS; x += input.dX) {
@@ -70,8 +71,8 @@ int main(void)
 			if (ystrl > twidth.y) twidth.y = ystrl;
 		} 
 
-		tsep(twidth);
-		printf("| ");
+		tsep(twidth, 218, 194, 191);
+		printf("%c ", 179);
 		uint xpos = twidth.x / 2;
 		uint ypos = twidth.y / 2;
 		for (uint i = 0; i < twidth.x; ++i) {
@@ -80,15 +81,15 @@ int main(void)
 			else 
 				putchar(' ');
 		}
-		printf(" | ");
+		printf(" %c ", 179);
 		for (uint i = 0; i < twidth.y; ++i) {
 			if (i == ypos)
 				putchar('Y');
 			else
 				putchar(' ');
 		}
-		printf(" |\n");
-		tsep(twidth);
+		printf(" %c\n", 179);
+		tsep(twidth, 195, 197, 180);
 
 		char *xstr = MY_MALLOC(char*, twidth.x + 1);
 		char *ystr = MY_MALLOC(char*, twidth.y + 1);
@@ -98,14 +99,14 @@ int main(void)
 		for (double x = input.X1; x < input.X2 + EPS; x += input.dX) {
 			dtoswf(xstr, twidth.x + 1, x, twidth.x);
 			strfunc(ystr, twidth.y + 1, x, twidth.y);
-			printf("| %s | %s |\n", xstr, ystr);
+			printf("%c %s %c %s %c\n", 179, xstr, 179, ystr, 179);
 		}	
 
-		tsep(twidth);
+		tsep(twidth, 192, 193, 217);
 
 		free(xstr);
 		free(ystr);
 	}
 
-		return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
