@@ -82,7 +82,7 @@ bool read_input(input_t *input) {
 		}
 
 		printf("Input Radius value: ");
-		if (!getdouble(&(input->R))) {
+		if (getdouble(&(input->R)) == FAILURE) {
 			error = 1;
 			continue;
 		}
