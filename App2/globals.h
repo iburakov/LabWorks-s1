@@ -1,17 +1,19 @@
-#ifndef GLOBALS_H
+`#ifndef GLOBALS_H
 #define GLOBALS_H
 
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <string.h>
+#include <ctype.h>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif // !M_PI
 
 #define MAX_WORDLEN 0x100
-#define MAX_STEPS 200
+#define MAX_STEPS 500
 #define SUCCESS 1
 #define FAILURE 0
 #define TRUE 1
@@ -30,7 +32,7 @@
 #define BD_BOT_LEFT 192
 #define BD_BOT_MID 193
 #define BD_BOT_RIGHT 217
-#define BD_HORIZONTAL 
+#define BD_HORIZONTAL 196
 #define BD_VERTICAL 179
 
 

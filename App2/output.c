@@ -49,13 +49,13 @@ void string_width_formatted(char *dest, uint dest_size, char* str, uint width) {
 // Prints a separator for a table with width defined in _twidth_
 // DONE
 void print_table_separator(tablewidth_t twidth, char left, char mid, char right) {
-	printf("%c%c", left, 196);
+	printf("%c%c", left, BD_HORIZONTAL);
 	for (int i = 0; i < twidth.x; ++i) {
-		putchar(196);
+		putchar(BD_HORIZONTAL);
 	}
-	printf("%c%c%c", 196, mid, 196);
+	printf("%c%c%c", BD_HORIZONTAL, mid, BD_HORIZONTAL);
 	for (int i = 0; i < twidth.y; ++i) {
-		putchar(196);
+		putchar(BD_HORIZONTAL);
 	}
-	printf("%c%c\n", 196, right);
+	printf("%c%c\n", BD_HORIZONTAL, right);
 }
