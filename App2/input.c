@@ -108,11 +108,13 @@ bool read_input(input_t *input) {
 			error = 1;
 			continue;
 		}
-		if (input->dX == 0 || (((input->X2 - input->X1) >= 0) != (input->dX > 0))) {
+		if (fabs(input->dX - 0) < EPS || 
+			(fabs(input->X1 - input->X2) > EPS) && 
+			(((input->X2 - input->X1) >= 0) != (input->dX > 0))) {
 			error = 3;
 			continue;
 		}
-		if ((input->X2 - input->X1) / input->dX > MAX_STEPS) {
+		if (fabs(input->X1 - input->X2) > EPS && (input->X2 - input->X1) / input->dX > MAX_STEPS) {
 			error = 4;
 			continue;
 		}

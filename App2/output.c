@@ -29,7 +29,7 @@ void dtostr_formatted(char *dest, uint dest_size, double x) {
 // DONE
 void dtostr_width_formatted(char *dest, uint dest_size, double x, uint width) {
 	char* xstr = MY_MALLOC(char*, dest_size);
-	MALLOC_CHK(xstr, "Couldn't allocate memory for xstr string buffer in dtoswf()!");
+	MALLOC_CHK(xstr, "Couldn't allocate memory for xstr string buffer in dtostr_width_formatted()!");
 	dtostr_formatted(xstr, dest_size, x);
 	string_width_formatted(dest, dest_size, xstr, width);
 	free(xstr);
@@ -40,7 +40,7 @@ void dtostr_width_formatted(char *dest, uint dest_size, double x, uint width) {
 // Writes a width-formatted string (aligning to right, hiding overflow)
 void string_width_formatted(char *dest, uint dest_size, char* str, uint width) {
 	char* format = MY_MALLOC(char*, dest_size);
-	MALLOC_CHK(format, "Couldn't allocate memory for format string buffer in swf()!");
+	MALLOC_CHK(format, "Couldn't allocate memory for format string buffer in string_width_formatted()!");
 	sprintf_s(format, dest_size, "%%%d.%ds", width, width);
 	sprintf_s(dest, dest_size, format, str);
 	free(format);

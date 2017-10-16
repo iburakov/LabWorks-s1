@@ -65,14 +65,14 @@ int main(void)
 	setlocale(LC_CTYPE, "C");
 
 	if (read_input(&input) == SUCCESS) {
-		for (double x = input.X1; fabs(x) < fabs(input.X2) + EPS; x += input.dX) {
+		FOR_X_IN_INPUT {
 			double y = func(x, input.R);
-			uint xstrl = (abs(x) > 0) ? (uint)log10(abs(x)) + 5 + ((x < 0) ? 1 : 0) : 5;
-			uint ystrl = (abs(y) > 0) ? (uint)log10(abs(y)) + 5 + ((y < 0) ? 1 : 0) : 5;
+			uint xstrl = (fabs(x) > 0 - EPS) ? (uint)log10(fabs(x)) + 5 + ((x < 0) ? 1 : 0) : 5;
+			uint ystrl = (fabs(y) > 0 - EPS) ? (uint)log10(fabs(y)) + 5 + ((y < 0) ? 1 : 0) : 5;
 			
 			if (xstrl > twidth.x) twidth.x = xstrl;
 			if (ystrl > twidth.y) twidth.y = ystrl;
-		} 
+		}	
 
 		print_table_separator(twidth, BD_TOP_LEFT, BD_TOP_MID, BD_TOP_RIGHT);
 		printf("%c ", BD_VERTICAL);
@@ -99,11 +99,11 @@ int main(void)
 		MALLOC_CHK(xstr, "Couldn't allocate memory for xstr string buffer during table printing in main()!");
 		MALLOC_CHK(ystr, "Couldn't allocate memory for ystr string buffer during table printing in main()!");
 
-		for (double x = input.X1; fabs(x) < fabs(input.X2) + EPS; x += input.dX) {
+		FOR_X_IN_INPUT {
 			dtostr_width_formatted(xstr, twidth.x + 1, x, twidth.x);
 			strfunc(ystr, twidth.y + 1, x, twidth.y);
 			printf("%c %s %c %s %c\n", BD_VERTICAL, xstr, BD_VERTICAL, ystr, BD_VERTICAL);
-		}	
+		}
 
 		print_table_separator(twidth, BD_BOT_LEFT, BD_BOT_MID, BD_BOT_RIGHT);
 
