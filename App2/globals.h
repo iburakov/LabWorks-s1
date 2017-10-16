@@ -35,7 +35,7 @@
 #define BD_HORIZONTAL 196
 #define BD_VERTICAL 179
 
-#define FOR_X_IN_INPUT for (double x = input.X1; fabs(input.X1 - x) < fabs(input.X2 - input.X1) + EPS; x += input.dX)
+
 
 
 typedef unsigned int uint, bool;
@@ -52,5 +52,9 @@ typedef struct {
 typedef struct {
 	int x, y;
 } point_t;
+
+typedef enum {
+
+} ;
 
 #endif // !GLOBALS_H

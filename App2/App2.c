@@ -3,6 +3,9 @@
 #include "output.h"
 
 
+#define FOR_X_IN_INPUT for (double x = input.X1; fabs(input.X1 - x) < fabs(input.X2 - input.X1) + EPS; x += input.dX)
+
+
 input_t input;
 tablewidth_t twidth;
 

@@ -57,6 +57,7 @@ bool getdouble(double *dest) {
 // Reads the input to the Input struct that _input_ points to. Returns TRUE on success, otherwise FALSE.
 bool read_input(input_t *input) {
 	uint error = 0;
+	
 	while (TRUE) {
 		if (error) {
 			char* errstr;
@@ -66,16 +67,17 @@ bool read_input(input_t *input) {
 			case 2: errstr = "radius should be greater than zero"; break;
 			case 3: errstr = "incompatible parameters - calculation will never stop"; break;
 			case 4: errstr = "incompatible parameters - too many steps to do"; break;
-			default: errstr = "unknown error"; break;
+			default: errstr = "unknown error";
 			}
 			printf("Wrong input: %s. Type 'y' to retry, or any other to exit from application: ", errstr);
 
 			char c;
-			if ((c = getchar_after_spaces()) == 'y' && (c = getchar_after_spaces()) == '\n') {
+			if ((c = getchar_after_spaces()) == 'y' 
+				&& (c = getchar_after_spaces()) == '\n') 
+			{
 				error = 0;
 				continue;
-			}
-			else {
+			} else {
 				clean_buffer(c);
 				return FAILURE;
 			}
