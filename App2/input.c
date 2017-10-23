@@ -14,7 +14,6 @@ void clean_buffer(char lastchar) {
 		;
 }
 
-
 // Copies a token from the stdin buffer to _dest_.
 // Returns a length of the token.
 uint getword(char *dest, char *lastchar) {
@@ -35,7 +34,11 @@ uint getword(char *dest, char *lastchar) {
 bool getdouble(double *dest) {
 	char lastchar;
 	char *token = MY_MALLOC(char*, MAX_WORDLEN);
-	MALLOC_CHK(token, "Couldn't allocate memory for token string buffer in getdouble()!");
+	// don't return from macrose
+	if (!token) {
+		printf("%s\n", "Couldn't allocate memory for token string buffer in getdouble()!");
+		return FAILURE;
+	}
 	char *token_end;
 	
 
@@ -45,6 +48,7 @@ bool getdouble(double *dest) {
 		&& (lastchar == '\n' || getchar_after_spaces() == '\n')
 		&& !isnan(*dest) && !isinf(*dest)) {
 		free(token);
+		// use this template to raise exceptions
 		return SUCCESS;
 	}
 	else {

@@ -25,23 +25,33 @@ void dtostr_formatted(char *dest, uint dest_size, double x) {
 // Writes a string representation of _x_ to _dest_.
 //
 // string has a fixed _width_ (aligning to right, hiding overflow), and trailingzeros-formatted as well.
-void dtostr_width_formatted(char *dest, uint dest_size, double x, uint width) {
+bool dtostr_width_formatted(char *dest, uint dest_size, double x, uint width) {
 	char* xstr = MY_MALLOC(char*, dest_size);
-	MALLOC_CHK(xstr, "Couldn't allocate memory for xstr string buffer in dtostr_width_formatted()!");
+	if (!xstr) {
+		printf("%s\n", "Couldn't allocate memory for xstr string buffer in dtostr_width_formatted()!");
+		return FAILURE;
+	}
 	dtostr_formatted(xstr, dest_size, x);
-	string_width_formatted(dest, dest_size, xstr, width);
+	if (!string_width_formatted(dest, dest_size, xstr, width)) {
+		return FAILURE;
+	}
 	free(xstr);
+	return SUCCESS;
 }	
 
 
 // String Width Formatted
 // Writes a width-formatted string (aligning to right, hiding overflow)
-void string_width_formatted(char *dest, uint dest_size, char* str, uint width) {
+bool string_width_formatted(char *dest, uint dest_size, char* str, uint width) {
 	char* format = MY_MALLOC(char*, dest_size);
-	MALLOC_CHK(format, "Couldn't allocate memory for format string buffer in string_width_formatted()!");
+	if (!format) {
+		printf("%s\n", "Couldn't allocate memory for format string buffer in string_width_formatted()!");
+		return FAILURE;
+	}
 	sprintf_s(format, dest_size, "%%%d.%ds", width, width);
 	sprintf_s(dest, dest_size, format, str);
 	free(format);
+	return SUCCESS;
 }
 
 // Prints a separator for a table with width defined in _twidth_

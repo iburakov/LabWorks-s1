@@ -13,7 +13,7 @@
 #endif // !M_PI
 
 #define MAX_WORDLEN 0x100
-#define MAX_STEPS 1000
+#define MAX_STEPS 1000000000
 #define SUCCESS 1
 #define FAILURE 0
 #define TRUE 1
@@ -21,7 +21,6 @@
 #define EPS 1e-07
 
 #define MY_MALLOC(type, count) (type)malloc(sizeof(type) * (count))
-#define MALLOC_CHK(var, errmsg) if (!(var)) {printf(#errmsg "\n"); exit(EXIT_FAILURE);}
 
 #define BD_TOP_LEFT 218
 #define BD_TOP_MID 194

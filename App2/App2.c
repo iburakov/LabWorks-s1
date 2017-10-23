@@ -39,24 +39,33 @@ double func(double x, double R) {
 // Writes a string repersentation of func(x) to dest.
 //
 // the string is already baked for printing to table (including fixed _width_)
-void strfunc(char *dest, uint dest_size, double x, uint width) {
+bool strfunc(char *dest, uint dest_size, double x, uint width) {
 	double y = func(x, input.R);
 	if (fabs(y - 0.0) < 0.001) {
 		// -0.0 protection
 		y = 0.0;
 	}
 	if (isnan(y)) {
-		string_width_formatted(dest, dest_size, "NaN", width);
+		if (!string_width_formatted(dest, dest_size, "NaN", width)) {
+			return FAILURE;
+		}
 	}
 	else if (isinf(y) && y > 0.0) {
-		string_width_formatted(dest, dest_size, "+Inf", width);
+		if (!string_width_formatted(dest, dest_size, "+Inf", width)) {
+			return FAILURE;
+		}
 	}
 	else if (isinf(y) && y < 0.0) {
-		string_width_formatted(dest, dest_size, "-Inf", width);
+		if (!string_width_formatted(dest, dest_size, "-Inf", width)) {
+			return FAILURE;
+		}
 	}
 	else {
-		dtostr_width_formatted(dest, dest_size, y, width);
+		if (!dtostr_width_formatted(dest, dest_size, y, width)) {
+			return FAILURE;
+		}
 	}
+	return SUCCESS;
 }
 
 
@@ -99,11 +108,15 @@ int main(void)
 
 		char *xstr = MY_MALLOC(char*, twidth.x + 1);
 		char *ystr = MY_MALLOC(char*, twidth.y + 1);
-		MALLOC_CHK(xstr, "Couldn't allocate memory for xstr string buffer during table printing in main()!");
-		MALLOC_CHK(ystr, "Couldn't allocate memory for ystr string buffer during table printing in main()!");
+		if (!xstr || !ystr) {
+			printf("%s\n", "Couldn't allocate memory for string buffer during table printing in main()!");
+			return EXIT_FAILURE;
+		}
 
 		FOR_X_IN_INPUT {
-			dtostr_width_formatted(xstr, twidth.x + 1, x, twidth.x);
+			if (!dtostr_width_formatted(xstr, twidth.x + 1, x, twidth.x)) {
+				return FAILURE;
+			}
 			strfunc(ystr, twidth.y + 1, x, twidth.y);
 			printf("%c %s %c %s %c\n", BD_VERTICAL, xstr, BD_VERTICAL, ystr, BD_VERTICAL);
 		}
