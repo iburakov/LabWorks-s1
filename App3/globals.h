@@ -14,4 +14,7 @@ typedef unsigned int bool;
 #define TRUE 1
 #define FALSE 0 
 
+#define QUEUE_DEFAULT_ARRAY_SIZE 1000
+#define QUEUE_ARRAY_REALLOC_STEP 100
+
 #endif // !GLOBALS_H
