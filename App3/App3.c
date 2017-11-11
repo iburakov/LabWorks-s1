@@ -1,14 +1,8 @@
 #include "globals.h"
 #include "input.h"
+#include "queue.h"
+#include "matrix.h"
 
-char* get_description(int inp) {
-	switch (inp)
-	{
-	case '1': return "partdesc1"; break;
-	case '2': return "partdesc2"; break;
-	default: return "No description provided"; break;
-	}
-}
 
 int main(void)
 {
@@ -22,16 +16,13 @@ int main(void)
 	if (inp != '1' && inp != '2' || getchar_after_spaces() != '\n') {
 		printf("Invalid part number, type '1' or '2'\n");
 		return 1;
-	} // стоит ли писать else после if'а с безусловным return'ом?
+	}
 
 	char* desc = (inp == '1') ? "partdesc1" : "partdesc2";
 	printf("Part #%c - %s", inp, desc);
 
-
-
-
-
-
-	printf("Bye!\n");
-	return 0;
+	if (inp == '1') return run_queue_interpreter();
+	else return run_matrix();
+	// "Incorrect command, please try again!"
+	// printf("Bye!\n");
 }

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include <ctype.h>
+#include <assert.h>
 
 typedef unsigned int bool;
 
