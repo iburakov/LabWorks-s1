@@ -4,6 +4,10 @@
 #include "matrix.h"
 
 
+char *ERRSTR;
+error_t ERROR = errNo;
+
+
 int main(void)
 {
 	setlocale(LC_CTYPE, "Russian");
@@ -18,11 +22,10 @@ int main(void)
 		return 1;
 	}
 
-	char* desc = (inp == '1') ? "partdesc1" : "partdesc2";
+	char* desc = (inp == '1') ? "queue implementation and command interpreter\n" : "partdesc2\n";
 	printf("Part #%c - %s", inp, desc);
 
 	if (inp == '1') return run_queue_interpreter();
 	else return run_matrix();
-	// "Incorrect command, please try again!"
 	// printf("Bye!\n");
 }
