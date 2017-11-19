@@ -15,10 +15,11 @@ int run_queue_interpreter(){
 
 	while (TRUE) {
 		switch (ERROR) {
-			case errUnknownCmd: printf("Incorrect command, please try again!\n"); ERROR = errNo; break;
+			case errUnknownCmd: printf("Unknown command, please try again!\n"); ERROR = errNo; break;
 			case errInvalidOper: printf("Invalid operation! %s\n", ERRSTR); ERROR = errNo; break;
 			case errTechnical: printf("Technical error! %s\n", ERRSTR); ERROR = errNo; break;
 			case errFatal: printf("FATAL ERROR! %s\n", ERRSTR); return EXIT_FAILURE;
+			default: break;
 		}
 
 		size_t tokens_count = tokenize_input(&tokens, 4);
@@ -59,6 +60,12 @@ int run_queue_interpreter(){
 				continue;
 			}
 
+			if (x > 1e13) {
+				ERROR = errInvalidOper;
+				ERRSTR = "Decimal number is too big for 'double' type.";
+				continue;
+			}
+
 			if (!enqueue(&queue, x)) continue;
 
 			char buf[TOKEN_BUF_SIZE];
@@ -87,8 +94,6 @@ bool queue_init(queue_t * qptr){
 
 bool enqueue(queue_t * qptr, double x){
 	if (next(qptr->tail, qptr) == qptr->head && queue_extend(qptr) == FAILURE) {
-		ERROR = errTechnical;
-		ERRSTR = "Couldn't reallocate memory to add new element to the queue.";
 		return FAILURE;
 	}
 
@@ -119,7 +124,7 @@ bool dequeue(queue_t *qptr, double *dest) {
 	} else {
 		qptr->head = next(qptr->head, qptr);
 	}
-
+  
 	return SUCCESS;
 }
 
@@ -142,15 +147,15 @@ bool stringify(char * dest, size_t dest_size, queue_t * qptr){
 	}
 	qlist[0] = '\0';
 
-	char buf[10];
+	char buf[TOKEN_BUF_SIZE];
 	size_t len = 1;
 	for (size_t i = qptr->head; i != qptr->tail; i = next(i, qptr)) {
-		sprintf_s(buf, 10, "%.3f, ", qptr->arr[i]);
+		sprintf_s(buf, TOKEN_BUF_SIZE, "%.3f, ", qptr->arr[i]);
 		++len;
 
 		strcat_s(qlist, sizeof(char) * dest_size, buf);
 	}
-	sprintf_s(buf, 10, "%.3f", qptr->arr[qptr->tail]);
+	sprintf_s(buf, TOKEN_BUF_SIZE, "%.3f", qptr->arr[qptr->tail]);
 	strcat_s(qlist, sizeof(char) * dest_size, buf);
 
 
@@ -160,10 +165,13 @@ bool stringify(char * dest, size_t dest_size, queue_t * qptr){
 }
 
 bool queue_extend(queue_t * qptr){
-
 	size_t newsize = qptr->arrsize + QUEUE_ARRAY_REALLOC_STEP;
 	double* newarr = (double*)realloc(qptr->arr, sizeof(double) * newsize);
-	if (!newarr) return FAILURE;
+	if (!newarr) {
+		ERROR = errTechnical;
+		ERRSTR = "Couldn't allocate more memory for the queue.";
+		return FAILURE;
+	}
 
 	if (!qptr->empty && qptr->tail < qptr->head) {
 		for (int i = 0; i <= qptr->tail; ++i) {

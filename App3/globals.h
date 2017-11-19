@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include <ctype.h>
+#include <math.h>
 #include <string.h>
 #include <assert.h>
 
@@ -14,10 +15,15 @@ typedef unsigned int bool;
 #define FAILURE 0
 #define TRUE 1
 #define FALSE 0 
+#define TOKEN_BUF_SIZE 1024
 
 #define QUEUE_DEFAULT_ARRAY_SIZE 100
 #define QUEUE_ARRAY_REALLOC_STEP 50
-#define TOKEN_BUF_SIZE 1024
+
+#define MIN_MATRIX_WIDTH 2
+#define MIN_MATRIX_HEIGHT 2
+
+#define EPS 1e-13
 
 typedef enum {
 	errNo = FALSE,

@@ -27,8 +27,26 @@ size_t get_next_token(char *dest, size_t dest_size);
 size_t tokenize_input(char ***tokens, size_t tokens_size);
 
 /**
-	Consumes everything from the stdin buffer until newline;
+	Consumes (clears) everything from the stdin buffer until newline;
 */
-void eatline();
+void cleanbuf();
+
+/**
+	Reads a long long from the stdin buffer.
+	Uses get_next_token() to gather the string to parse. 
+
+	@param valptr A pointer to the value storage.
+	@return Whether an operation was successful or not.
+*/
+bool get_next_ll(long long *valptr);
+
+/**
+	Reads a double from the stdin buffer.
+	Uses get_next_token() to gather the string to parse.
+
+	@param valptr A pointer to the value storage.
+	@return Whether an operation was successful or not.
+*/
+bool get_next_double(double *valptr);
 
 #endif // !INPUT_H
