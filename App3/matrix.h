@@ -15,7 +15,7 @@ int run_matrix();
 	@param y A pointer to matrix height storage.
 	@return Whether an operation was successful or not.
 */
-bool get_params(size_t * wptr, size_t * hptr);
+bool get_params(long long * wptr, long long * hptr);
 
 /**
 	Allocates memory for the matrix.

@@ -20,11 +20,11 @@ size_t get_next_token(char *dest, size_t dest_size);
 /**
 	Splits current line from stdin into tokens.
 
-	@param tokens A pointer to array where read tokens should be put.
+	@param tokens An array where read tokens should be put.
 	@param tokens_size A size of tokens buffer.
 	@return The length of tokens array produced by the function. 0 on failure.
 */
-size_t tokenize_input(char ***tokens, size_t tokens_size);
+size_t tokenize_input(char **tokens, size_t tokens_size);
 
 /**
 	Consumes (clears) everything from the stdin buffer until newline;

@@ -35,17 +35,17 @@ size_t get_next_token(char * dest, size_t dest_size)
 	return i;
 }
 
-size_t tokenize_input(char *** tokens, size_t tokens_size){
+size_t tokenize_input(char **tokens, size_t tokens_size){
 	int i = 0;
 	while (i < tokens_size) {
-		(*tokens)[i] = (char*)malloc(sizeof(char) * TOKEN_BUF_SIZE);
-		if (!(*tokens)[i]) {
+		tokens[i] = (char*)malloc(sizeof(char) * TOKEN_BUF_SIZE);
+		if (!tokens[i]) {
 			ERROR = errFatal;
 			ERRSTR = "Couldn't allocate memory for next token while input tokenizing.";
 			return FAILURE;
 		}
 		
-		if (!get_next_token((*tokens)[i], TOKEN_BUF_SIZE)) {
+		if (!get_next_token(tokens[i], TOKEN_BUF_SIZE)) {
 			return FAILURE;
 		}
 		++i;

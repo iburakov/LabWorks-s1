@@ -22,7 +22,7 @@ int run_queue_interpreter(){
 			default: break;
 		}
 
-		size_t tokens_count = tokenize_input(&tokens, 4);
+		size_t tokens_count = tokenize_input(tokens, 4);
 
 		if (tokens_count == 0) {
 			continue;
