@@ -4,12 +4,11 @@
 
 int run_queue_interpreter(){
 	queue_t queue;
-	char **tokens = (char**)malloc(sizeof(char*) * 4);
+	char **tokens = (char**)malloc(sizeof(char*) * TOKENS_BUF_SIZE);
 	if (!tokens) {
 		ERROR = errFatal;
 		ERRSTR = "Couldn't allocate memory for input tokens buffer!";
 	}
-
 
 	queue_init(&queue);
 
@@ -18,7 +17,10 @@ int run_queue_interpreter(){
 			case errUnknownCmd: printf("Unknown command, please try again!\n"); ERROR = errNo; break;
 			case errInvalidOper: printf("Invalid operation! %s\n", ERRSTR); ERROR = errNo; break;
 			case errTechnical: printf("Technical error! %s\n", ERRSTR); ERROR = errNo; break;
-			case errFatal: printf("FATAL ERROR! %s\n", ERRSTR); return EXIT_FAILURE;
+			case errFatal: printf("FATAL ERROR! %s\n", ERRSTR); {
+				free(queue.arr);
+				return EXIT_FAILURE;
+			}
 			default: break;
 		}
 
@@ -32,13 +34,14 @@ int run_queue_interpreter(){
 				double x;
 				if (!dequeue(&queue, &x)) continue;
 
-				char buf[TOKEN_BUF_SIZE];
-				stringify(buf, TOKEN_BUF_SIZE, &queue);
+				char buf[TOKEN_SIZE];
+				queue_stringify(buf, TOKEN_SIZE, &queue);
 				printf("Read value is %.3f\n", x);
 				printf("%s\n", buf);
 			}
 			else if (strcmp(tokens[0], "done") == 0) {
 				printf("Bye!\n");
+				free(queue.arr);
 				return EXIT_SUCCESS;
 			}
 			else if (strcmp(tokens[0], "enqueue") == 0) {
@@ -68,8 +71,8 @@ int run_queue_interpreter(){
 
 			if (!enqueue(&queue, x)) continue;
 
-			char buf[TOKEN_BUF_SIZE];
-			stringify(buf, TOKEN_BUF_SIZE, &queue);
+			char buf[TOKEN_SIZE];
+			queue_stringify(buf, TOKEN_SIZE, &queue);
 			printf("%s\n", buf);
 		}
 		else {
@@ -93,7 +96,7 @@ bool queue_init(queue_t * qptr){
 }
 
 bool enqueue(queue_t * qptr, double x){
-	if (next(qptr->tail, qptr) == qptr->head && queue_extend(qptr) == FAILURE) {
+	if (queue_next(qptr->tail, qptr) == qptr->head && queue_extend(qptr) == FAILURE) {
 		return FAILURE;
 	}
 
@@ -103,7 +106,7 @@ bool enqueue(queue_t * qptr, double x){
 		qptr->head = 0;
 		qptr->empty = FALSE;
 	} else {
-		qptr->tail = next(qptr->tail, qptr);
+		qptr->tail = queue_next(qptr->tail, qptr);
 		qptr->arr[qptr->tail] = x;
 	}
 	
@@ -122,13 +125,13 @@ bool dequeue(queue_t *qptr, double *dest) {
 	if (qptr->head == qptr->tail) {
 		qptr->empty = TRUE;
 	} else {
-		qptr->head = next(qptr->head, qptr);
+		qptr->head = queue_next(qptr->head, qptr);
 	}
   
 	return SUCCESS;
 }
 
-bool stringify(char * dest, size_t dest_size, queue_t * qptr){
+bool queue_stringify(char * dest, size_t dest_size, queue_t * qptr){
 	if (qptr->empty) {
 		sprintf_s(dest, dest_size, "Queue-0 []");
 		return SUCCESS;
@@ -147,15 +150,15 @@ bool stringify(char * dest, size_t dest_size, queue_t * qptr){
 	}
 	qlist[0] = '\0';
 
-	char buf[TOKEN_BUF_SIZE];
+	char buf[TOKEN_SIZE];
 	size_t len = 1;
-	for (size_t i = qptr->head; i != qptr->tail; i = next(i, qptr)) {
-		sprintf_s(buf, TOKEN_BUF_SIZE, "%.3f, ", qptr->arr[i]);
+	for (size_t i = qptr->head; i != qptr->tail; i = queue_next(i, qptr)) {
+		sprintf_s(buf, TOKEN_SIZE, "%.3f, ", qptr->arr[i]);
 		++len;
 
 		strcat_s(qlist, sizeof(char) * dest_size, buf);
 	}
-	sprintf_s(buf, TOKEN_BUF_SIZE, "%.3f", qptr->arr[qptr->tail]);
+	sprintf_s(buf, TOKEN_SIZE, "%.3f", qptr->arr[qptr->tail]);
 	strcat_s(qlist, sizeof(char) * dest_size, buf);
 
 
@@ -183,6 +186,6 @@ bool queue_extend(queue_t * qptr){
 	return SUCCESS;
 }
 
-size_t next(size_t ind, queue_t * qptr){
+size_t queue_next(size_t ind, queue_t * qptr){
 	return (ind + 1) % qptr->arrsize;
 }

@@ -38,14 +38,14 @@ size_t get_next_token(char * dest, size_t dest_size)
 size_t tokenize_input(char **tokens, size_t tokens_size){
 	int i = 0;
 	while (i < tokens_size) {
-		tokens[i] = (char*)malloc(sizeof(char) * TOKEN_BUF_SIZE);
+		tokens[i] = (char*)malloc(sizeof(char) * TOKEN_SIZE);
 		if (!tokens[i]) {
 			ERROR = errFatal;
 			ERRSTR = "Couldn't allocate memory for next token while input tokenizing.";
 			return FAILURE;
 		}
 		
-		if (!get_next_token(tokens[i], TOKEN_BUF_SIZE)) {
+		if (!get_next_token(tokens[i], TOKEN_SIZE)) {
 			return FAILURE;
 		}
 		++i;
@@ -71,10 +71,10 @@ void cleanbuf() {
 }
 
 bool get_next_ll(long long * valptr){
-	char buf[TOKEN_BUF_SIZE];
+	char buf[TOKEN_SIZE];
 	char *last;
 
-	if (!get_next_token(buf, TOKEN_BUF_SIZE) || getchar_after_spaces() != '\n') {
+	if (!get_next_token(buf, TOKEN_SIZE) || getchar_after_spaces() != '\n') {
 		return FAILURE;
 	}
 
@@ -88,10 +88,10 @@ bool get_next_ll(long long * valptr){
 }
 
 bool get_next_double(double * valptr){
-	char buf[TOKEN_BUF_SIZE];
+	char buf[TOKEN_SIZE];
 	char *last;
 
-	if (!get_next_token(buf, TOKEN_BUF_SIZE)) {
+	if (!get_next_token(buf, TOKEN_SIZE)) {
 		return FAILURE;
 	}
 

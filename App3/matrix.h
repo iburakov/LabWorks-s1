@@ -15,7 +15,7 @@ int run_matrix();
 	@param y A pointer to matrix height storage.
 	@return Whether an operation was successful or not.
 */
-bool get_params(long long * wptr, long long * hptr);
+bool get_matrix_params(long long * wptr, long long * hptr);
 
 /**
 	Allocates memory for the matrix.
@@ -33,7 +33,7 @@ bool allocate_matrix_mem(double ***mptr, size_t w, size_t h);
 	@param w Length of the row (a.k.a. width of the matrix)
 	@return Whether an operation was successful or not.
 */
-bool get_row(double *rowptr, size_t w);
+bool get_matrix_row(double *rowptr, size_t w);
 
 /**
 	Counts rows with at least 1 zero element in a matrix.
@@ -41,7 +41,7 @@ bool get_row(double *rowptr, size_t w);
 	@param matr Target matrix to process.
 	@return A number of rows satisfying described condition.
 */
-size_t count_zero_rows(double **matr, size_t w, size_t h);
+size_t matrix_count_zero_rows(double **matr, size_t w, size_t h);
 
 /**
 	Gets an index of row where the longest sequence of equal numbers is presented in a matrix.
@@ -49,7 +49,7 @@ size_t count_zero_rows(double **matr, size_t w, size_t h);
 	@param matr Target matrix.
 	@return An index of row where the longest sequence of equal numbers is presented.
 */
-size_t get_longest_eqseq_row(double **matr, size_t w, size_t h);
+size_t get_matrix_longest_eqseq_row(double **matr, size_t w, size_t h);
 
 #endif // !MATRIX_H
 

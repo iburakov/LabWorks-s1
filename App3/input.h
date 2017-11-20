@@ -4,7 +4,7 @@
 /**
 	Reads characters from the stdin buffer until a non-space character occurs. 
 
-	@return The first char after spaces.
+	@return The first char after spaces or -1 on EOF.
 */
 int getchar_after_spaces();
 

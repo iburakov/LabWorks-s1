@@ -51,7 +51,7 @@ bool dequeue(queue_t *qptr, double *dest);
 	@param qptr A queue to stringify.
 	@return Whether the operation was successful or not (SUCCESS or FAILURE).
 */
-bool stringify(char *dest, size_t dest_size, queue_t *qptr);
+bool queue_stringify(char *dest, size_t dest_size, queue_t *qptr);
 
 /**
 	Reallocate queue's array to gain more memory.
@@ -68,6 +68,6 @@ bool queue_extend(queue_t *qptr);
 	@param qptr A pointer to the queue structure caller is asking about.
 	@return An incremented index.
 */
-size_t next(size_t ind, queue_t *qptr);
+size_t queue_next(size_t ind, queue_t *qptr);
 
 #endif // !QUEUE_H

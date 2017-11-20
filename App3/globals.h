@@ -15,7 +15,8 @@ typedef unsigned int bool;
 #define FAILURE 0
 #define TRUE 1
 #define FALSE 0 
-#define TOKEN_BUF_SIZE 1024
+#define TOKEN_SIZE 1024
+#define TOKENS_BUF_SIZE 4
 
 #define QUEUE_DEFAULT_ARRAY_SIZE 100
 #define QUEUE_ARRAY_REALLOC_STEP 50
