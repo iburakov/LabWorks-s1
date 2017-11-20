@@ -26,5 +26,5 @@ int main(void)
 	}
 
 	printf("Invalid part number, type '1' or '2'\n");
-	return 1;
+	return EXIT_SUCCESS;
 }
