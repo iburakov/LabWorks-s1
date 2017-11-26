@@ -13,7 +13,19 @@
 #define EXIT_FILE_READ_ERROR 4
 
 typedef unsigned short bufsize_t;
-// typedef unsigned int bool;
+typedef unsigned int bool;
+
+int print_line(FILE *fp, long start) {
+	fseek(fp, start, SEEK_SET);
+
+	int c;
+	while ((c = fgetc(fp)) != EOF) {
+		putc(c, stdout);
+		if (c == '\n') return TRUE;
+	}
+	if (feof(fp)) return TRUE;
+	else return FALSE;
+}
 
 void run_file(FILE * fp)
 {
@@ -25,17 +37,24 @@ void run_file(FILE * fp)
 	} last_state = stNothing;
 	
 	int c;
-	long line_beg;
+	long line_beg = ftell(fp);
+	bool new_line = FALSE;
 	while ((c = fgetc(fp)) != EOF) {
-		if (c == '\n') {
-			// process string termination
+		if (new_line) {
+			if (!print_line(fp, line_beg)) return; // DEBUG: printing a line
+
+			line_beg = ftell(fp);
+			new_line = FALSE;
 		}
 
-		if (/*found 2-digit number*/) {
+		if (c == '\n') {
+			new_line = TRUE;
+			continue;
+		}
+
+		if (/*found 2-digit number*/0) {
 			// print a string based on stored info
 		}
-
-		printf("Next character code read is: %d\n", c);
 	}
 }
 
