@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include <assert.h>
 
 #define BUF_SIZE 256
@@ -15,14 +16,19 @@
 typedef unsigned short bufsize_t;
 typedef unsigned int bool;
 
+// TODO: DEBUG
+
 int print_line(FILE *fp, long start) {
 	fseek(fp, start, SEEK_SET);
 
 	int c;
 	while ((c = fgetc(fp)) != EOF) {
 		putc(c, stdout);
-		if (c == '\n') return TRUE;
+		if (c == '\n') {
+			return TRUE;
+		}
 	}
+
 	if (feof(fp)) return TRUE;
 	else return FALSE;
 }
@@ -31,29 +37,38 @@ void run_file(FILE * fp)
 {
 	enum {
 		stNothing,
-		stSpace,
+		stPrefix,
 		stFirstDigit,
-		stSecondDigit
-	} last_state = stNothing;
+		stSecondDigit,
+		stFound
+	} last_state = stPrefix;
 	
 	int c;
 	long line_beg = ftell(fp);
-	bool new_line = FALSE;
 	while ((c = fgetc(fp)) != EOF) {
-		if (new_line) {
-			if (!print_line(fp, line_beg)) return; // DEBUG: printing a line
+		switch (last_state)
+		{
+			case stNothing:
+			case stSecondDigit: {
+				if (!isalnum(c)) ++last_state;
+				else last_state = stNothing;
+			} break;
+			
+			case stPrefix:
+			case stFirstDigit: {
+				if (isdigit(c)) ++last_state;
+				else last_state = max(last_state, stNothing);
+			} break;			
+		}
 
-			line_beg = ftell(fp);
-			new_line = FALSE;
+ 		if (last_state == stFound) {
+			if (print_line(fp, line_beg)) c = '\n';
+			else return;
 		}
 
 		if (c == '\n') {
-			new_line = TRUE;
-			continue;
-		}
-
-		if (/*found 2-digit number*/0) {
-			// print a string based on stored info
+			line_beg = ftell(fp);
+			last_state = stPrefix;
 		}
 	}
 }
