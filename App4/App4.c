@@ -16,85 +16,9 @@
 typedef unsigned short bufsize_t;
 typedef unsigned int bool;
 
-// TODO: DEBUG
-
-int print_line(FILE *fp, long start) {
-	fseek(fp, start, SEEK_SET);
-
-	int c;
-	while ((c = fgetc(fp)) != EOF) {
-		putc(c, stdout);
-		if (c == '\n') {
-			return TRUE;
-		}
-	}
-
-	if (feof(fp)) return TRUE;
-	else return FALSE;
-}
-
-void run_file(FILE * fp)
-{
-	enum {
-		stNothing,
-		stPrefix,
-		stFirstDigit,
-		stSecondDigit,
-		stFound
-	} last_state = stPrefix;
-	
-	int c;
-	long line_beg = ftell(fp);
-	while ((c = fgetc(fp)) != EOF) {
-		switch (last_state)
-		{
-			case stNothing:
-			case stSecondDigit: {
-				if (!isalnum(c)) ++last_state;
-				else last_state = stNothing;
-			} break;
-			
-			case stPrefix:
-			case stFirstDigit: {
-				if (isdigit(c)) ++last_state;
-				else last_state = max(last_state, stNothing);
-			} break;			
-		}
-
- 		if (last_state == stFound) {
-			if (print_line(fp, line_beg)) c = '\n';
-			else return;
-		}
-
-		if (c == '\n') {
-			line_beg = ftell(fp);
-			last_state = stPrefix;
-		}
-	}
-}
-
-int finish_file(FILE* fp, char* fn) {
-	char buf[BUF_SIZE];
-	int exit_code; 
-
-	if (ferror(fp)) {
-		strerror_s(buf, BUF_SIZE, errno);
-		printf("File \"%s\" can't be read: %s.\n", fn, buf);
-		exit_code = EXIT_FILE_READ_ERROR;
-	}
-	else if (feof(fp)) {
-		exit_code = EXIT_SUCCESS;
-	}
-	else {
-		assert(FALSE);
-	}
-
-	if (fclose(fp) == EOF) {
-		printf("Couldn't properly close a file!\n");
-	}
-
-	return exit_code;
-}
+int print_line_from_file(FILE *fp, long start);
+void process_file(FILE * fp);
+int finish_file(FILE* fp, char* fn);
 
 int main(int argc, char* argv[]) {
 	if (argc == 1) {
@@ -123,6 +47,87 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	run_file(fp);
+	process_file(fp);
 	return finish_file(fp, argv[1]);
+}
+
+
+int print_line_from_file(FILE *fp, long start) {
+	fseek(fp, start, SEEK_SET);
+
+	int c;
+	while ((c = fgetc(fp)) != EOF) {
+		putc(c, stdout);
+		if (c == '\n') {
+			return TRUE;
+		}
+	}
+
+	if (feof(fp)) return TRUE;
+	else return FALSE;
+}
+
+
+void process_file(FILE * fp) {
+	enum {
+		stNothing,
+		stPrefix,
+		stFirstDigit,
+		stSecondDigit,
+		stFound
+	} last_state = stPrefix;
+
+	int c;
+	long line_beg = ftell(fp);
+	while ((c = fgetc(fp)) != EOF) {
+		switch (last_state)
+		{
+		case stNothing:
+		case stSecondDigit: {
+			if (!isalnum(c)) ++last_state;
+			else last_state = stNothing;
+		} break;
+
+		case stPrefix: {
+			if (isdigit(c)) ++last_state;
+			else if (isalnum(c)) last_state = stNothing;
+		} break;
+
+		case stFirstDigit: {
+			if (isdigit(c)) ++last_state;
+			else last_state = stNothing;
+		} break;
+		}
+
+		if (last_state == stFound) {
+			if (print_line_from_file(fp, line_beg)) c = '\n';
+			else return;
+		}
+
+		if (c == '\n') {
+			line_beg = ftell(fp);
+			last_state = stPrefix;
+		}
+	}
+}
+
+
+int finish_file(FILE* fp, char* fn) {
+	char buf[BUF_SIZE];
+	int exit_code;
+
+	if (ferror(fp)) {
+		strerror_s(buf, BUF_SIZE, errno);
+		printf("File \"%s\" can't be read (a error occurred while reading a file): %s.\n", fn, buf);
+		exit_code = EXIT_FILE_READ_ERROR;
+	}
+	else if (feof(fp)) {
+		exit_code = EXIT_SUCCESS;
+	}
+
+	if (fclose(fp) == EOF) {
+		printf("Couldn't properly close a file!\n");
+	}
+
+	return exit_code;
 }

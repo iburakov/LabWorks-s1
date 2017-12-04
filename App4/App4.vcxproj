@@ -114,6 +114,9 @@
   <ItemGroup>
     <ClCompile Include="App4.c" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\x64\Debug\app4.in" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
