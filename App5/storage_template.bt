@@ -1,0 +1,29 @@
+//--------------------------------------
+//--- 010 Editor v5.0 Binary Template
+//
+// File: *.bin
+// File Signature: LAB5.BIN
+// Author: Speedwatson
+// Revision: 1
+// Purpose: Parse a storage for the fifth lab work
+//--------------------------------------
+
+typedef uint32 Address;
+
+typedef struct {
+    Address next;
+    char data[60];
+} Block;
+
+typedef struct {
+    char signature[8];
+    uint32 block_size;
+    uint32 hashtable_power; // can't be less than two!    
+} Header;
+
+LittleEndian();
+
+Header header;
+Block free_store;
+Block hashtable[header.hashtable_power];
+Block data[10];
