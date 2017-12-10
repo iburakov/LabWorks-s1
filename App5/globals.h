@@ -13,5 +13,13 @@ typedef uint8_t bool;
 #define SUCCESS TRUE
 #define FAILURE FALSE
 
+typedef enum {
+	errNo = 0,
+	errExit = 1,
+
+} error_t;
+
+extern error_t ERROR;
+extern char* ERRSTR;
 
 #endif GLOBALS_H

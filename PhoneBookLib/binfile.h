@@ -2,9 +2,8 @@
 #define BINFILE_H
 #include "..\App5\globals.h"
 
-// All functions declared in this header should support error handling by using these global variables:
-//		error_t ERROR
-//		char* ERRSTR
+extern error_t pbERROR;
+extern char* pbERRSTR;
 
 // All sizes defined in bytes
 #define FILE_SIGNATURE "LAB5.BIN"
@@ -105,10 +104,11 @@ bool binfile_get_free_block(BinFile* bfp, address_t* addr);
 //	for the first unwanted block. Set next of the previous to the NULL.
 bool binfile_write_chain(BinFile* bfp, address_t headaddr, char* data, size_t data_size);
 
-//	Sets up a chain and writes data to it.
-//
-//	Aquires an address of ready-for-safe-writing block and writes data to it, 
-//	because writing to a block supports extension to a chain.
-bool binfile_add_chain(BinFile* bfp, char* data, size_t data_size);
+//////	ALLOCATION OF A FREE BLOCK SHOULD BE HANDLED BY CALLER OF binfile_write_chain() NOW: ADDRESS MAY BE NEEDED FURTHER
+////	Sets up a chain and writes data to it.
+////
+////	Aquires an address of ready-for-safe-writing block and writes data to it, 
+////	because writing to a block supports extension to a chain.
+//bool binfile_add_chain(BinFile* bfp, char* data, size_t data_size);
 
 #endif
