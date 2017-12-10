@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdint.h>
+#include <assert.h>
 
 typedef uint8_t bool;
 #define TRUE 1
@@ -13,10 +14,13 @@ typedef uint8_t bool;
 #define SUCCESS TRUE
 #define FAILURE FALSE
 
+#define TOKEN_SIZE 1024
+
 typedef enum {
 	errNo = 0,
-	errExit = 1,
-
+	errExit,
+	errFatal,
+	errTechnical,
 } error_t;
 
 extern error_t ERROR;

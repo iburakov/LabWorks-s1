@@ -2,9 +2,6 @@
 #define BINFILE_H
 #include "..\App5\globals.h"
 
-extern error_t pbERROR;
-extern char* pbERRSTR;
-
 // All sizes defined in bytes
 #define FILE_SIGNATURE "LAB5.BIN"
 #define FILE_SIGNATURE_SIZE 8
