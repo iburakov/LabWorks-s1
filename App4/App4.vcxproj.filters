@@ -20,7 +20,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\x64\Debug\app4.in">
+    <None Include="app4.in">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
