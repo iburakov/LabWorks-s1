@@ -64,6 +64,11 @@ bool menu_handle_siblings(MenuEntry* me, State* state, char key);
 */
 bool menu_deploy(MenuEntry* me, State* state);
 
+/*
+	Cleans up (frees the memory) all underlying members of the menu and itself.
+*/
+void menu_free(MenuEntry * me);
+
 
 
 #endif 

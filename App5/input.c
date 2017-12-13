@@ -12,10 +12,10 @@ size_t get_next_token(char * dest, size_t dest_size)
 	char c;
 	do {
 		c = getchar_after_spaces();
-	} while (isspace(c));
+	} while (isspace(c) && (c != '\n'));
 
 	int i = 0;
-	while (!isspace(c)) {
+	while (!isspace(c) && (c != '\n')) {
 		if (i == dest_size) {
 			assert(FALSE);
 			ERROR = errFatal;
@@ -48,8 +48,10 @@ size_t tokenize_input(char **tokens, size_t tokens_size) {
 		}
 
 		if (!get_next_token(tokens[i], TOKEN_SIZE)) {
+			cleanbuf();
 			return FAILURE;
 		}
+		
 		++i;
 
 		char c = getchar_after_spaces();
@@ -70,4 +72,31 @@ size_t tokenize_input(char **tokens, size_t tokens_size) {
 void cleanbuf() {
 	while (getchar() != '\n')
 		;
+}
+
+char getkey() {
+	int key;
+	char next;
+	if ((key = getchar_after_spaces()) != EOF && key != '\n' && (next = getchar_after_spaces()) == '\n') {
+		return (char)key;
+	}
+
+	// wrong input
+	if (key != EOF && key != '\n') {
+		ungetc(next, stdin);
+		cleanbuf();
+	}
+	ERROR = errTechnical;
+	ERRSTR = "Invalid input.";
+	return FAILURE;
+}
+
+bool user_agrees() {
+	char key = getkey();
+	while (!key && key != 'y' && key != 'n') {
+		printf("Invalid input. Try again. 'y' or 'n'.\n");
+		key = getkey();
+	}
+	if (!key) return FAILURE;
+	return (key == 'y');
 }

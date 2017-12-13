@@ -8,6 +8,12 @@ char* ERRSTR = "";
 
 int main() {
 	State st;
+	BinFile bf;
+	bf.fp = NULL;
+	st.bfp = &bf;
+	
+	int exit_code = EXIT_SUCCESS;
+	bool not_terminating = TRUE;
 	
 	// INITIALIZING MENU
 	if (!(st.menu = menu_alloc("PhoneBook collection operating terminal. Choose an option:", 0, NULL, NULL)) ||
@@ -24,19 +30,24 @@ int main() {
 			!menu_add_child(st.menu, "Exit", 'e', &menuhandler_exit)
 		) {
 		fprintf(stderr, "Couldn't allocate memory for a menu");
-		return EXIT_FAILURE;
+		exit_code = EXIT_FAILURE;
+		not_terminating = FALSE;
 	}
-	while (TRUE) {
+
+	while (not_terminating) {
 		if (!menu_deploy(st.menu, &st)) {
 			switch (ERROR)
 			{
 			case errFatal: {
 				printf("FATAL ERROR! %s\n", ERRSTR);
-				return EXIT_FAILURE;
+				system("pause");
+				exit_code = EXIT_FAILURE;
+				not_terminating = FALSE;
 			} break;
 			case errExit: {
 				printf("%s\n", ERRSTR);
-				return EXIT_SUCCESS;
+				exit_code = EXIT_SUCCESS;
+				not_terminating = FALSE;
 			} break;
 			case errTechnical: {
 				printf("%s\n", ERRSTR);
@@ -44,7 +55,13 @@ int main() {
 			} break;
 			default: break;
 			}
+			ERROR = errNo;
+			ERRSTR = "";
 		}
 		system("cls");
 	}
+
+	binfile_unload(&bf);
+	menu_free(st.menu);
+	return exit_code;
 }

@@ -37,7 +37,7 @@ bool menu_print(MenuEntry* me, int level) {
 	if (!me->key || !me->text) {
 		assert(FALSE);
 		ERROR = errFatal;
-		ERRSTR = "Attempted to print corrupted MenuEntry.";
+		ERRSTR = "Attempted to print a corrupted MenuEntry.";
 		return FAILURE;
 	}
 
@@ -90,17 +90,12 @@ bool menu_deploy(MenuEntry * me, State * state) {
 	menu_print(me->child, 1);
 
 	char key;
-	char next;
-	if ((key = getchar_after_spaces()) != EOF && key != '\n' && (next = getchar_after_spaces()) == '\n') {
-		return menu_handle(me, state, key);
-	} 
+	if (key = getkey()) return menu_handle(me, state, key);
+	else return FAILURE;
+}
 
-	// wrong input
-	if (key != '\n') {
-		ungetc(next, stdin);
-		cleanbuf();
-	}	
-	ERROR = errTechnical;
-	ERRSTR = "Invalid input.";
-	return FAILURE;
+void menu_free(MenuEntry* me) {
+	if (me->child) menu_free(me->child);
+	if (me->next) menu_free(me->next);
+	free(me);
 }

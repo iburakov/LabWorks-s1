@@ -35,6 +35,12 @@ size_t tokenize_input(char **tokens, size_t tokens_size);
 */
 void cleanbuf();
 
+char getkey();
+
+//	Asks a regular y/n question.
+//	@return	TRUE if user answered yes, FALSE otherwise.
+bool user_agrees();
+
 
 #endif 
 
