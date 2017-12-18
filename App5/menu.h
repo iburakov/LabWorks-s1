@@ -20,6 +20,7 @@ typedef struct MenuEntry {
 typedef struct State {
 	MenuEntry* menu;
 	BinFile* bfp;
+	bool win;
 } State;
 
 

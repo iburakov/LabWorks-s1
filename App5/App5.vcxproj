@@ -145,7 +145,7 @@
     <ClInclude Include="menuhandlers.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="example.bin" />
+    <None Include="ex.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

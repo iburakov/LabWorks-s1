@@ -70,7 +70,8 @@ size_t tokenize_input(char **tokens, size_t tokens_size) {
 }
 
 void cleanbuf() {
-	while (getchar() != '\n')
+	int c;
+	while ((c = getchar()) != '\n' && c != EOF)
 		;
 }
 
@@ -85,6 +86,10 @@ char getkey() {
 	if (key != EOF && key != '\n') {
 		ungetc(next, stdin);
 		cleanbuf();
+	}
+	if (key == EOF) {
+		ERROR = errExit;
+		return FAILURE;
 	}
 	ERROR = errTechnical;
 	ERRSTR = "Invalid input.";

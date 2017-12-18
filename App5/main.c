@@ -6,11 +6,14 @@
 error_t ERROR = errNo;
 char* ERRSTR = "";
 
-int main() {
+int main(int argc, char* argv[]) {
 	State st;
 	BinFile bf;
 	bf.fp = NULL;
 	st.bfp = &bf;
+	st.win = TRUE;
+	if (argc > 1 && strcmp(argv[1], "--console") == 0) st.win = FALSE;
+	
 	
 	int exit_code = EXIT_SUCCESS;
 	bool not_terminating = TRUE;
@@ -40,7 +43,7 @@ int main() {
 			{
 			case errFatal: {
 				printf("FATAL ERROR! %s\n", ERRSTR);
-				system("pause");
+				if (st.win) system("pause");
 				exit_code = EXIT_FAILURE;
 				not_terminating = FALSE;
 			} break;
@@ -51,14 +54,14 @@ int main() {
 			} break;
 			case errTechnical: {
 				printf("%s\n", ERRSTR);
-				system("pause");
+				if (st.win) system("pause");
 			} break;
 			default: break;
 			}
 			ERROR = errNo;
 			ERRSTR = "";
 		}
-		system("cls");
+		if (st.win) system("cls");
 	}
 
 	binfile_unload(&bf);

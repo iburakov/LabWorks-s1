@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <assert.h>
+#include <errno.h>
 
 typedef uint8_t bool;
 #define TRUE 1
