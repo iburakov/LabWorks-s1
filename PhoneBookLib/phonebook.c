@@ -34,10 +34,17 @@ bool isleap(int year) {
 }
 
 hash_t hash(char * str, int power) {
-	hash_t hash = 0;
-	int i = 0;
-	while (str[i] != '\0') hash = ((((uint64_t)(hash + str[i++])) * 691 /* 113 */)) % power;
-	return hash;
+	/* djb2 by Dan Bernstein */
+	unsigned long long hash = 5381;
+	int c;
+	while (c = *str++) hash = ((hash << 5) + hash) + c;
+	return (power - 1) & hash;
+
+	/* MY OLD POOR HASH FUNCTION */
+	//hash_t hash = 0;
+	//int i = 0;
+	//while (str[i] != '\0') hash = ((((uint64_t)(hash + str[i++])) * 691 /* 113 */)) % power;
+	//return hash;
 }
 
 bool meets_criterias(BinFile* bfp, char ** criterias, size_t csize, address_t recaddr, bool * result) {
