@@ -1,2 +1,2 @@
 # LabWorks-s1
-This is a cloud project for my current lab works (Semester 1, Department of Informatics and Applied Mathematics, ITMO University).
+A repo for my old lab works (Semester 1, Department of Informatics and Applied Mathematics @ ITMO University).
